@@ -1,10 +1,8 @@
 const topicsRouter = require('express').Router();
-// controllers heree
+const { getTopics } = require('../controllers/topics')
 
 
 topicsRouter.route('')
-    .get((req, res, next) => {
-        res.send("Test for topics")
-    })
+    .get(getTopics);
 
 module.exports = topicsRouter;

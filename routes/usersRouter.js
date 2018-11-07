@@ -1,10 +1,8 @@
 const usersRouter = require('express').Router();
-// controllers heree
+const { getUsers } = require('../controllers/users') 
 
 
 usersRouter.route('')
-    .get((req, res, next) => {
-        res.send("Test for users")
-    })
+    .get(getUsers)
 
 module.exports = usersRouter;
