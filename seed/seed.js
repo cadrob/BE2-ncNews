@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Article, Comment, Topic, User } = require('../models')
-// require in controllers here
+const { createMongoRefObj } = require('../utils');
+
 
 
 
@@ -10,14 +11,20 @@ const seedDB = ({articlesData, commentsData, topicsData, usersData}) => {
     .then(() => {
        return Promise.all([Topic.insertMany(topicsData), User.insertMany(usersData)])
     })
-    .then(([topicDocs, userDocs]) => {  //here is the the array of two data arrays, needs to be destructored
-        // const newArticles = articlesData.map(article => {
-        //     return {
-        //         ...article,
-        //         //belongs_to ref to topic slug
-        //         //created_by ref user mongo id
-        //     }
-        // })
+    .then(([topicDocs, userDocs]) => { 
+        //const userRefs = createRefObj(usersData, userDocs);
+        const userRefs = createMongoRefObj(usersData, userDocs, 'username');
+        console.log(userRefs['butter_bridge'])
+    
+    //    // here is the the array of two data arrays, needs to be destructored
+    //     const newArticles = articlesData.map(article => {
+    //         return {
+    //             ...article,
+    //             created_by: ref user mongo id
+    //             //belongs_to ref to topic slug
+                
+    //         }
+    //     })
         // return Article.insertMany(newArticles);
     })
 }
