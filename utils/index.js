@@ -1,8 +1,22 @@
-const createMongoRefObj = (data, docs, key) => { //key is a string 
+const createMongoRefObj = (data, docs, key) => { 
+ 
     return data.reduce((refObj, datum, index) => {
+      
         refObj[datum[key]] = docs[index]._id
         return refObj;
     }, {});
 }
 
-module.exports = { createMongoRefObj }
+const formatArticles = (articlesData, userRefs, topicRefs) => {
+    return articlesData.map(article => {
+        return {
+            ...article,
+            created_by: userRefs[article.created_by],
+            belongs_to: topicRefs[article.topic]
+            
+        }
+    })
+
+}
+
+module.exports = { createMongoRefObj, formatArticles }
