@@ -1,3 +1,4 @@
+
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
@@ -11,7 +12,7 @@ app.use(bodyParser.json());
 
 mongoose.connect( // we need to connect to the database everytime we have a request
     DB_URL,
-    { useNewUrlParser: true },
+    { useNewUrlParser: true, useCreateIndex: true },
     console.log("Connected to DB...")
   );
 
@@ -20,5 +21,10 @@ mongoose.connect( // we need to connect to the database everytime we have a requ
   app.use('/*', (req, res, next) => {
     return next({status: 404, msg: 'Page Not Found'})
 })
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(err.status || 500).send({msg: err.msg || 'Internal Server Error'})
+});
 
 module.exports = app;

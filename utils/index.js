@@ -11,7 +11,7 @@ const formatArticles = (articlesData, userRefs, topicRefs) => {
         return {
             ...article,
             created_by: userRefs[article.created_by],
-            belongs_to: topicRefs[article.topic]
+            belongs_to: article.topic
             
         }
     })

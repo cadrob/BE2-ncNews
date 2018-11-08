@@ -1,4 +1,4 @@
-const { Article } = require ('../models');
+const { Article, Comment } = require ('../models');
 
 const getArticles = (req, res, next) => {
     Article.find()
@@ -9,11 +9,22 @@ const getArticles = (req, res, next) => {
 
 const getArticleByID = (req, res, next) => {
     const { article_id } = req.params;
-    console.log(article_id)
     Article.find({_id: article_id })
         .then((article) => {
             res.status(200).send({article})
         }).catch(next)
 }
 
-module.exports = { getArticles, getArticleByID }
+const getCommentsForArticle = (req, res, next) => {
+//get the article id,
+//search the comment docs that match that articleid and return
+
+const { article_id } = req.params;
+Comment.find({belongs_to: article_id})
+.then((comments) => {
+    res.status(200).send({comments})
+}).catch(next)
+
+}
+
+module.exports = { getArticles, getArticleByID, getArticleByID, getCommentsForArticle }
