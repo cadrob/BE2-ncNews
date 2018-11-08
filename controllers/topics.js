@@ -5,6 +5,7 @@ const getTopics = (req, res, next) => {
     .then((topics) => {
         res.status(200).send({topics})
     })
+    .catch(next)
 }
 
 const getArticlesByTopic = (req, res ,next) => {
@@ -14,6 +15,7 @@ Article.find({belongs_to: topic_slug})
 .then((articles) => {
          res.status(200).send(articles);
      })
+     .catch(next)
   
 }
 
