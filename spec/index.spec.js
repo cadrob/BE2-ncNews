@@ -12,7 +12,8 @@ describe('/api', () => {
         commentDocs, 
         topicDocs, 
         userDocs,
-        ;
+        wrongID = new mongoose.mongo.ObjectId
+        
      //create a wrong ID using mongoose;
      //comment count
      //error handlers
@@ -22,10 +23,10 @@ describe('/api', () => {
      //readme
 
     beforeEach(() => {
-        // return mongoose.connect(DB_URL, { useNewUrlParser: true })
-        // .then(() => {
-        //     console.log('connected to database');
-            //return seedDB(testData);
+            return seedDB(testData)
+            .then((docs) => {
+                [ topicDocs, userDocs, articleDocs, commentDocs ] = docs;
+            })
     })
 
     after(() => mongoose.disconnect())
