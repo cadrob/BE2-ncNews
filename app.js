@@ -16,15 +16,17 @@ mongoose.connect( // we need to connect to the database everytime we have a requ
     console.log("Connected to DB...")
   );
 
-  app.use('/api', apiRouter)
+app.use('/api', apiRouter)
 
-  app.use('/*', (req, res, next) => {
+app.use('/*', (req, res, next) => {
     return next({status: 404, msg: 'Page Not Found'})
 })
 
 app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(err.status || 500).send({msg: err.msg || 'Internal Server Error'})
+  if(err.name === 'CastError') {
+    res.status(400).send({msg: err.message || 'Internal Server Error'})
+  }
+  else res.status(err.status || 500).send({msg: err.msg || 'Internal Server Error'})
 });
 
 module.exports = app;

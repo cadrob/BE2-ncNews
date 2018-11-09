@@ -12,7 +12,10 @@ const getUserByUsername = (req, res, next) => {
     const { username } = req.params;
     User.find({username: username})
     .then((user) => {
-        res.status(200).send({user});
+        if (!user.length){
+            return Promise.reject({ status: 404, msg: `User does not exist for: ${username}` })
+        }
+        else res.status(200).send({user});
     })
     .catch(next)
 
