@@ -30,6 +30,7 @@ describe('/api', () => {
     })
 
     after(() => mongoose.disconnect())
+    // ARTICLES
     describe('/articles', () => {
         it('GET returns status 200 an array of all the articles', () => {
             return request.get('/api/articles').expect(200)
@@ -88,5 +89,60 @@ describe('/api', () => {
             
         })
 
+    })
+
+    // USERS
+    describe('/users', () => {
+        it('GET returns status 200 an array of all users', () => {
+            return request.get('/api/users').expect(200)
+            .then((res) => { 
+                expect(res.body.users.length).to.equal(2)
+                expect(res.body.users[0].username).to.equal(userDocs[0].username)
+            })
+        })
+    })
+    describe('/users/:username', () => {
+        it('GET returns status 200 an array of all users', () => {
+            return request.get(`/api/users/${userDocs[0].username}`).expect(200)
+            .then((res) => { 
+                expect(res.body.user[0].username).to.equal(userDocs[0].username)
+                expect(res.body.user[0]._id).to.equal(`${userDocs[0]._id}`)
+            })
+        })
+    })
+
+    //TOPICS
+
+    describe('/topics', () => {
+        it('GET returns status 200 an array of all topics', () => {
+            return request.get('/api/topics').expect(200)
+            .then((res) => { 
+                expect(res.body.topics.length).to.equal(2)
+                expect(res.body.topics[1].title).to.equal(topicDocs[1].title)
+            })
+        }) ////:topic_slug/articles
+    })
+    describe.only('/topics/:topic_slug/articles', () => {
+        it('GET returns status 200 and array of articles related to topic', () => {
+            return request.get(`/api/topics/${topicDocs[0].slug}/articles`).expect(200)
+            .then((res) => { 
+                expect(res.body.length).to.equal(2)
+                expect(res.body[0].belongs_to).to.equal(topicDocs[0].slug)
+            })
+        })
+        it('POST returns status 201 addsnew article to a topic and returns that new article', () => {
+            const postedArticle = { 
+            title: "new article", 
+            body: "This is my new article content", 
+            created_by: "5be5516e60a08790f1370fb9"
+        }
+            return request.post(`/api/topics/${topicDocs[0].slug}/articles`)
+            .send(postedArticle)
+            .expect(201)
+            .then((res) => {
+                expect(res.body.article.belongs_to).to.equal(topicDocs[0].slug)
+                expect(res.body.article.title).to.equal(postedArticle.title)
+            })
+        })
     })
 });
