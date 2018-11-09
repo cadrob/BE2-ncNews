@@ -13,7 +13,10 @@ const { topic_slug } = req.params;
 
 Article.find({belongs_to: topic_slug})
 .then((articles) => {
-         res.status(200).send(articles);
+    if (!articles.length){
+        return Promise.reject({ status: 400, msg: ` ---${topic_slug}--- is not a valid topic` })
+    }
+        else res.status(200).send(articles);
      })
      .catch(next)
   

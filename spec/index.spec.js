@@ -8,8 +8,18 @@ const mongoose = require('mongoose');
 const { DB_URL } = require('../config')
 
 describe('/api', () => {
-    let articleDocs, commentDocs, topicDocs, userDocs;
+    let articleDocs, 
+        commentDocs, 
+        topicDocs, 
+        userDocs,
+        ;
      //create a wrong ID using mongoose;
+     //comment count
+     //error handlers
+     //html page for api
+     // tests
+     //hosts 
+     //readme
 
     beforeEach(() => {
         // return mongoose.connect(DB_URL, { useNewUrlParser: true })
