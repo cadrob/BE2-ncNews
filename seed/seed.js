@@ -14,10 +14,11 @@ const seedDB = ({articlesData, commentsData, topicsData, usersData}) => {
     .then(([topicDocs, userDocs]) => { 
         const userRefs = createMongoRefObj(usersData, userDocs, 'username');
         const topicRefs = createMongoRefObj(topicsData, topicDocs, 'slug');
-            return Promise.all([Article.insertMany(formatArticles(articlesData, userRefs, topicRefs)), userRefs]);
-    }).then(([articleDocs, userRefs]) => {
+            return Promise.all([topicDocs , userDocs, Article.insertMany(formatArticles(articlesData, userRefs, topicRefs)), userRefs]);
+    }).then(([topicDocs, userDocs , articleDocs, userRefs]) => {
+       // console.log(userDocs)
         const articleRefs = createMongoRefObj(articlesData, articleDocs, 'title');
-        return Comment.insertMany((formatComments(commentsData, userRefs, articleRefs)));
+        return Promise.all([topicDocs, userDocs, articleDocs, Comment.insertMany((formatComments(commentsData, userRefs, articleRefs)))]) ;
     })
     .catch(console.log)
 }
