@@ -1,3 +1,4 @@
+const { Comment } = require('../models');
 const createMongoRefObj = (data, docs, key) => { 
  
     return data.reduce((refObj, datum, index) => {
@@ -28,4 +29,11 @@ const formatComments = (commentsData, userRefs, articleRefs) => {
     })
 }
 
-module.exports = { createMongoRefObj, formatArticles, formatComments }
+const commentCount = (article) => { 
+        return Comment.countDocuments({ belongs_to: article._id })
+    .then((commentNum) => {
+      return { ...article._doc , commentCount: commentNum }
+    })
+  }
+
+module.exports = { createMongoRefObj, formatArticles, formatComments, commentCount }

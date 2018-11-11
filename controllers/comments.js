@@ -22,7 +22,7 @@ const updateCommentVotes = (req, res, next) => {
         { $inc: { votes: vote_change } }, 
         { new: true } )
     .then((comment) => {
-      res.send( { comment } )
+      res.status(200).send( { comment } )
     })
     .catch(next)
 
@@ -33,7 +33,7 @@ const updateCommentVotes = (req, res, next) => {
       Comment.findOneAndDelete( {_id: comment_id})
       .then((deletedComment) =>
     
-      res.status(200).send('This document has been removed from the Database')
+      res.status(200).send({message: 'This document has been removed from the Database'})
       )
       .catch(next);
   }
