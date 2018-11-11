@@ -22,14 +22,20 @@ mongoose.connect( // we need to connect to the database everytime we have a requ
 app.use('/api', apiRouter)
 
 app.use('/*', (req, res, next) => {
-    return next({status: 404, msg: 'Page Not Found'})
+  return next({status: 404, msg: 'Page Not Found'})
 })
 
 app.use((err, req, res, next) => {
+  console.log(err)
   if(err.name === 'CastError') {
     res.status(400).send({msg:`ID doesn\'t exist for ${err.value}` || 'Internal Server Error'})
   }
+  else if(err.name ==='ValidationError') {
+    res.status(400).send({msg: `Bad Request - ${err.message}`} || 'Internal Server Error')
+  }
   else res.status(err.status || 500).send({msg: err.msg || 'Internal Server Error'})
 });
+
+
 
 module.exports = app;
