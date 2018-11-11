@@ -1,4 +1,5 @@
 const { Topic, Article } = require ('../models');
+const { commentCount } = require('../utils');
 
 const getTopics = (req, res, next) => {
     Topic.find()
@@ -16,10 +17,13 @@ Article.find({belongs_to: topic_slug})
     if (!articles.length){
         return Promise.reject({ status: 400, msg: ` ---${topic_slug}--- is not a valid topic` })
     }
-        else res.status(200).send(articles);
-     })
-     .catch(next)
-  
+    else {  
+        return Promise.all(articles.map(article => commentCount(article)))
+    }
+}).then((articles) => {
+    res.status(200).send(articles)
+})
+   
 }
 
 const addArticleToTopic = (req, res, next) => {

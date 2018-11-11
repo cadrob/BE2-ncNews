@@ -14,11 +14,9 @@ describe('/api', () => {
         userDocs,
         wrongID = new mongoose.mongo.ObjectId
         
-     //create a wrong ID using mongoose;
+
      //comment count
-     //error handlers
      //html page for api
-     // tests
      //hosts 
      //readme
 
@@ -27,6 +25,8 @@ describe('/api', () => {
             .then((docs) => {
                 [ topicDocs, userDocs, articleDocs, commentDocs ] = docs;
             })
+            
+
     })
 
     after(() => mongoose.disconnect())
@@ -35,18 +35,16 @@ describe('/api', () => {
         it('GET returns status 200 an array of all the articles', () => {
             return request.get('/api/articles').expect(200)
             .then((res) => { 
-                expect(res.body.articles.length).to.equal(4)
-                expect(res.body.articles[0].title).to.equal("Living in the shadow of a great man")
+                expect(res.body.length).to.equal(4)
+                expect(res.body[0].title).to.equal("Living in the shadow of a great man")
             })
         })
     })
     describe('/articles/:article_id', () => {
         it('GET returns status of 200 and a single article', () => {
             return request.get(`/api/articles/${articleDocs[1]._id}`)
-            .expect(200)
             .then((res) => {
-                expect(res.body.article.length).to.equal(1)
-                expect(res.body.article[0]._id).to.equal(`${articleDocs[1]._id}`)
+                expect(res.body.article._id).to.equal(`${articleDocs[1]._id}`)
             })
          })
          it('PATCH returns status of 200 and updates the votecount of said article', () => {
@@ -122,7 +120,7 @@ describe('/api', () => {
             })
         }) ////:topic_slug/articles
     })
-    describe.only('/topics/:topic_slug/articles', () => {
+    describe('/topics/:topic_slug/articles', () => {
         it('GET returns status 200 and array of articles related to topic', () => {
             return request.get(`/api/topics/${topicDocs[0].slug}/articles`).expect(200)
             .then((res) => { 
@@ -145,4 +143,67 @@ describe('/api', () => {
             })
         })
     })
+    //COMMENT TESTS
+    describe('/comments', () => {
+        it('GET returns status 200 an array of all the comments', () => {
+            return request.get('/api/comments').expect(200)
+            .then((res) => { 
+                expect(res.body.comments.length).to.equal(8)
+                expect(res.body.comments[2].body).to.equal(res.body.comments[2].body);
+            })
+        })
+    })
+
+    // describe.only('/comments/:comment_id', () => {
+    //     it('PATCH returns status 200 and the updated comment object'), () => {
+    //         console.log('hello')
+    //         console.log(commentDocs[1]._id);
+    //         return request.patch(`/api/comments/${commentDocs[1]._id}?vote=up`)
+    //         .expect(200)
+    //         .then((res) => {
+    //             expect(res.body.comment._id).to.equal(commentDocs[1]._id)
+    //         })
+    //     }
+    // })
+    describe('/comments/:comment_id', () => { 
+        it('PATCH returns status of 200 and increases the votecount, returning the comment', () => {
+            return request.patch(`/api/comments/${commentDocs[2]._id}?vote=up`).expect(200)
+            .then((res) => {
+                expect(res.body.comment._id).to.equal(`${commentDocs[2]._id}`)
+                expect(res.body.comment.votes).to.equal(commentDocs[2].votes+1)
+                })
+            })
+            it('PATCH returns status of 200 and decreases the votecount, returning the comment', () => {
+                return request.patch(`/api/comments/${commentDocs[1]._id}?vote=down`).expect(200)
+                .then((res) => {
+                    expect(res.body.comment._id).to.equal(`${commentDocs[1]._id}`)
+                    expect(res.body.comment.votes).to.equal(commentDocs[1].votes-1)
+                    })
+                })
+            it('DELETE returns status 200, removes the comment and returns message', () => {
+                const testComment = {
+                        body: "I am going to be deleted, nooo!",
+                        created_by: `${userDocs[0]._id}`
+                    }
+        
+                return request.post(`/api/articles/${articleDocs[0]._id}/comments`)
+                .send(testComment)
+                .then((res) => { //check that comment to be deleted has been added
+                    expect(res.body.comment.body).to.equal(testComment.body)
+                    return res.body.comment
+                })
+                .then((comment) => {
+                    return request.delete(`/api/comments/${comment._id}`)
+                    .expect(200)
+                    .then((res) => {
+                       expect(res.body.message).to.equal('This document has been removed from the Database')
+                    })
+                })
+                })    
+        
+        })
+       
+   
+
+  
 });
