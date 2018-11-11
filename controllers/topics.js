@@ -15,14 +15,14 @@ const { topic_slug } = req.params;
 Article.find({belongs_to: topic_slug})
 .then((articles) => {
     if (!articles.length){
-        return Promise.reject({ status: 400, msg: ` ---${topic_slug}--- is not a valid topic` })
+        return Promise.reject({ status: 400, msg: `---${topic_slug}--- is not a valid topic` })
     }
     else {  
         return Promise.all(articles.map(article => commentCount(article)))
     }
 }).then((articles) => {
     res.status(200).send(articles)
-})
+}).catch(next)
    
 }
 

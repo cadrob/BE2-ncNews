@@ -5,7 +5,6 @@ const { expect } = require('chai');
 const seedDB = require('../seed/seed');
 const testData = require('../seed/testData')
 const mongoose = require('mongoose');
-const { DB_URL } = require('../config')
 
 describe('/api', () => {
     let articleDocs, 
@@ -13,12 +12,6 @@ describe('/api', () => {
         topicDocs, 
         userDocs,
         wrongID;
-        
-
-     //comment count
-     //html page for api
-     //hosts 
-     //readme
 
     beforeEach(() => {
             return seedDB(testData)
@@ -208,6 +201,23 @@ describe('/api', () => {
           .then((res) => { 
             expect(res.body.msg).to.equal(`Article does not exist for : ${wrongID}`)
             })
+        })
+    });
+    describe.only('/topics/abcdefg/articles', () => {
+        const testTopic = 'abcdefg'
+        it('GET returns status 400 and error regarding slug', () => {
+          return request.get(`/api/topics/${testTopic}/articles`).expect(400)
+          .then((res) => { 
+            expect(res.body.msg).to.equal(`---${testTopic}--- is not a valid topic`)
+            })
+        })
+        it('POST returns status 400 and error message when without body', () => {
+            return request.post(`/api/topics/abcdefg/articles`).expect(400)
+            .send({})
+            .then((res) => {
+                expect(res.body.msg).to.equal('Bad Request - articles validation failed: title: Path `title` is required., body: Path `body` is required., created_by: Path `created_by` is required.')
+            })
+            
         })
     });
 });
