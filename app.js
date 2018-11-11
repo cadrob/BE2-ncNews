@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 const { DB_URL } = require('./config')
 
 app.use(bodyParser.json());
+app.use(express.static('public'));
+app.set('view engine', 'ejs')
+
 
 
 

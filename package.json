@@ -7,12 +7,14 @@
     "test": "mocha ./spec",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "seed:dev": "node seed/seed.dev.js"
+    "seed:dev": "node seed/run-seed.js",
+    "seed:production" : "NODE_ENV=production node seed/run-seed.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "mongoose": "^5.2.8"
   },

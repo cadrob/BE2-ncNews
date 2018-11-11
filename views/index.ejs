@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>API Paths</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+  <script src="main.js"></script>
+</head>
+<body>
+  <h1>
+    API Paths for Northcoders-news (/api/)
+  </h1>
+
+
+  <h2>
+     GET /topics
+  </h2>
+    <h3>This will return all topics</h3>
+  <h2>
+     GET /topics/:topic_slug/articles
+  </h2>
+    <h3>This will return all the articles for a certain topic</h3>
+  <h2>
+     POST /topics/:topic_slug/articles
+  </h2>
+    <h3>Add a new article to a topic.  Requires JSON body with title and body key</h3>    
+  <h2>
+     GET /articles
+  </h2>
+    <h3>This will return all articles</h3>
+  <h2>
+     GET /articles/:article_id
+  </h2>
+    <h3>
+      This will return an individual article relating to the given ID<h3>
+  <h2>
+     GET /articles/:article_id/comments
+  </h2>
+    <h3>
+      This will return all the comments for a individual article<h3>
+  <h2>
+     POST /articles/:article_id/comments
+  </h2>
+    <h3>
+        Add a new comment to an article. This route requires a JSON body with body and created_by key <h3>
+  <h2>
+     PATCH /articles/:article_id/
+  </h2>
+    <h3>
+        Increment or Decrement the votes of an article by one. This route requires a vote query of 'up' or 'down' <br> e.g: `/api/articles/:article_id?vote=up <h3>
+  <h2>
+     PATCH /comments/:comment_id
+  </h2>
+    <h3>
+        Increment or Decrement the votes of an comment by one. This route requires a vote query of 'up' or 'down' <br> e.g: `/api/comments/:comment_id?vote=up <h3>
+  <h2>
+     DELETE /comments/:comment_id
+  </h2>
+    <h3>
+      This will delete the comment relating to the given ID<h3>
+        <h2>
+     GET /users/:username
+  </h2>
+    <h3>
+      This will return a JSON object with the profile data for the specified user<h3>
+</body>
+</html>
