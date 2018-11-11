@@ -202,6 +202,8 @@ describe('/api', () => {
                 })    
         
         })
+
+        //ERROR TESTS
        
    
 
