@@ -12,7 +12,7 @@ describe('/api', () => {
         commentDocs, 
         topicDocs, 
         userDocs,
-        wrongID = new mongoose.mongo.ObjectId
+        wrongID;
         
 
      //comment count
@@ -24,6 +24,7 @@ describe('/api', () => {
             return seedDB(testData)
             .then((docs) => {
                 [ topicDocs, userDocs, articleDocs, commentDocs ] = docs;
+                wrongID = new mongoose.mongo.ObjectId;
             })
             
 
@@ -153,18 +154,6 @@ describe('/api', () => {
             })
         })
     })
-
-    // describe.only('/comments/:comment_id', () => {
-    //     it('PATCH returns status 200 and the updated comment object'), () => {
-    //         console.log('hello')
-    //         console.log(commentDocs[1]._id);
-    //         return request.patch(`/api/comments/${commentDocs[1]._id}?vote=up`)
-    //         .expect(200)
-    //         .then((res) => {
-    //             expect(res.body.comment._id).to.equal(commentDocs[1]._id)
-    //         })
-    //     }
-    // })
     describe('/comments/:comment_id', () => { 
         it('PATCH returns status of 200 and increases the votecount, returning the comment', () => {
             return request.patch(`/api/comments/${commentDocs[2]._id}?vote=up`).expect(200)
@@ -204,8 +193,21 @@ describe('/api', () => {
         })
 
         //ERROR TESTS
-       
-   
+  describe('Errors for any invalid paths', () => {
+        it('GET returns status 404 and error message', () => {
+          return request.get(`/api/articlesERTYUIO`).expect(404)
+          .then((res) => { 
+            expect(res.body.msg).to.equal("Page Not Found")
+            })
+        })
+    });
 
-  
+    describe('/articles/:article_id', () => {
+        it('GET returns status 404 and error message when valid mongo ID doesn\'t exist', () => {
+          return request.get(`/api/articles/${wrongID}`).expect(404)
+          .then((res) => { 
+            expect(res.body.msg).to.equal(`Article does not exist for : ${wrongID}`)
+            })
+        })
+    });
 });

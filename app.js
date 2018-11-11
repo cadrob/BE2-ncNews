@@ -27,7 +27,7 @@ app.use('/*', (req, res, next) => {
 
 app.use((err, req, res, next) => {
   if(err.name === 'CastError') {
-    res.status(400).send({msg: err.message || 'Internal Server Error'})
+    res.status(400).send({msg:`ID doesn\'t exist for ${err.value}` || 'Internal Server Error'})
   }
   else res.status(err.status || 500).send({msg: err.msg || 'Internal Server Error'})
 });
