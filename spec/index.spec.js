@@ -203,7 +203,7 @@ describe('/api', () => {
             })
         })
     });
-    describe.only('/topics/abcdefg/articles', () => {
+    describe('/topics/abcdefg/articles', () => {
         const testTopic = 'abcdefg'
         it('GET returns status 400 and error regarding slug', () => {
           return request.get(`/api/topics/${testTopic}/articles`).expect(400)
