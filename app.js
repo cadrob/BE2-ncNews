@@ -4,7 +4,9 @@ const app = express();
 const apiRouter = require('./routes/apiRouter');
 const bodyParser = require('body-parser');
 const  DB_URL  = process.env.DB_URL || require('./config')
+const cors = require('cors');
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs')

@@ -8,12 +8,13 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "seed:dev": "node seed/run-seed.js",
-    "seed:production" : "NODE_ENV=production node seed/run-seed.js"
+    "seed:production": "NODE_ENV=production node seed/run-seed.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "mongoose": "^5.3.10"
